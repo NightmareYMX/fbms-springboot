@@ -1,0 +1,27 @@
+server:
+  port: 8081
+  address: 127.0.0.1
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fbms?useSSL=false
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+  servlet:
+    multipart:
+      #单个文件最大大小
+      max-file-size: 200MB
+      #所有上传文件最大大小
+      max-request-size: 2000MB
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+files:
+  upload:
+    profile: D:/Java/project/fbms/src/main/resources/static/profile
+    file: D:/Java/project/fbms/src/main/resources/static/file
+
