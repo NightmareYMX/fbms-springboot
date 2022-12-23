@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymx.fbms.mapper.FilesMapper">
+    <insert id="insert">
+        insert into file values (null, #{file.fileName}, #{file.fileType}, #{file.fileSize}, #{file.fileUrl}, #{file.fileEnable});
+    </insert>
+    <update id="updateFileEnable">
+        update file
+        set file_enable = #{fileEnable}
+        where file_id = #{fileId}
+    </update>
+
+    <delete id="deleteById">
+        delete from file where file_id = #{file.fileId}
+    </delete>
+
+    <delete id="deleteBatchByIds">
+        delete from file where file_id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <select id="selectUrlById" resultType="java.lang.String">
+        select file_url from file where file_id = #{file.fileId};
+    </select>
+
+    <select id="selectUrlByIds" resultType="java.lang.String">
+        select file_url from file where file_id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+    <select id="getFileByFileType" resultType="com.ymx.fbms.pojo.Files">
+        select * from file where
+            file_type  in (
+        <foreach collection="fileType" item="type" separator=",">
+                #{type}
+        </foreach>
+        )
+    </select>
+
+    <select id="getAllFile" resultType="com.ymx.fbms.pojo.Files">
+        select *from file
+    </select>
+
+    <select id="getAllFileTypes" resultType="java.lang.String">
+        select distinct(file_type) from file
+    </select>
+</mapper>

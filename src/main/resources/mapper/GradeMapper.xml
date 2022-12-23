@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymx.fbms.mapper.GradeMapper">
+
+    <resultMap id="gradeCourseUser" type="com.ymx.fbms.pojo.Grade">
+        <result property="grade" column="grade"/>
+        <association property="user" javaType="com.ymx.fbms.pojo.User">
+            <id property="userId" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="userEmail" column="user_email"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userAddress" column="user_address"/>
+        </association>
+        <association property="course" javaType="com.ymx.fbms.pojo.Course">
+            <id property="courseNo" column="course_no"/>
+            <result property="courseName" column="course_name"/>
+            <result property="credits" column="credits"/>
+        </association>
+    </resultMap>
+    <insert id="addGrade">
+        insert into grade values (#{grade.user.userId}, #{grade.course.courseNo}, #{grade.grade})
+    </insert>
+    <update id="updateGrade">
+        update grade
+        set grade = #{grade.grade}
+        where student_id = #{grade.user.userId}
+        and course_no = #{grade.course.courseNo}
+    </update>
+    <select id="selectBySIdAndCNo" resultMap="gradeCourseUser">
+        select * from grade, course, user
+        <where>
+            grade.student_id = user.user_id
+            and grade.course_no = course.course_no
+            <if test="courseNo != null and courseNo != ''">
+                and course.course_no = #{courseNo}
+            </if>
+        </where>
+    </select>
+</mapper>
